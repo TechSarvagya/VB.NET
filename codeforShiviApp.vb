@@ -1,7 +1,7 @@
 Imports System.Data.OleDb
 Public Class Form1
     Dim pt As Integer = 0
-    Dim t1 As Integer = 10
+    Dim t1 As Integer = 1
     Dim t2 As Integer = 0
     Dim x
     Dim questions As String() = New String(12) {}
@@ -10,6 +10,7 @@ Public Class Form1
     Dim conn As New OleDbConnection
     Dim ds As New OleDbDataAdapter
     Dim command As New OleDbCommand
+    Dim timeup As Label = New Label()
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
 
@@ -70,7 +71,30 @@ Public Class Form1
 
         If (t1 = 0 And t2 = 0) Then
             Timer2.Stop()
+            Button2.Visible = False
+            RichTextBox5.Visible = True
+            RichTextBox4.Visible = False
+            Timer2.Stop()
+            RichTextBox2.Text = "So " + x + " Your Points Are: "
+            RichTextBox5.Text = TextBox4.Text
+            Label3.Visible = True
+            CheckBox1.Visible = False
+            CheckBox2.Visible = False
+            CheckBox3.Visible = False
+            CheckBox4.Visible = False
 
+            On Error GoTo lb
+            command = New OleDbCommand("INSERT INTO Table1(Name,Points,FirstMeet,QualitiesLiked) VALUES(@Name,@Points,@FirstMeet ,@QualitiesLiked)", conn)
+            command.Parameters.AddWithValue("@Name", TextBox5.Text)
+            command.Parameters.AddWithValue("@Points", TextBox4.Text)
+            command.Parameters.AddWithValue("@FirstMeet", RichTextBox4.Text)
+            command.Parameters.AddWithValue("@QualitiesLiked", RichTextBox5.Text)
+            conn.Open()
+            If command.ExecuteNonQuery() > 0 Then
+            End If
+
+            conn.Close()
+lb:
         End If
 
 
@@ -312,6 +336,22 @@ lb:
     End Sub
 
     Private Sub RichTextBox1_TextChanged(sender As Object, e As EventArgs) Handles RichTextBox1.TextChanged
+
+    End Sub
+
+    Private Sub Panel1_Paint(sender As Object, e As PaintEventArgs) Handles Panel1.Paint
+        timeup.Visible = False
+    End Sub
+
+    Private Sub RichTextBox2_TextChanged(sender As Object, e As EventArgs) Handles RichTextBox2.TextChanged
+
+    End Sub
+
+    Private Sub RichTextBox5_TextChanged(sender As Object, e As EventArgs) Handles RichTextBox5.TextChanged
+
+    End Sub
+
+    Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Label3.Click
 
     End Sub
 End Class
